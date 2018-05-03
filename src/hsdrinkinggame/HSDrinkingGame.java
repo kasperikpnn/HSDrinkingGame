@@ -1,6 +1,5 @@
 package hsdrinkinggame;
 public class HSDrinkingGame {
-
     public static void main(String[] args) {
 //eetu on nisti
         boolean urmomgay = true;

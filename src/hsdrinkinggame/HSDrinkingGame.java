@@ -36,12 +36,26 @@ import javafx.collections.ObservableList;
 import javafx.stage.Popup;
 public class HSDrinkingGame extends Application {
     private int players;
-    private ArrayList<Player> playerlist;
+    private int index;
+    private ArrayList<Player> playerlist = new ArrayList<Player>();
+    private Scene scene;
+    private Stage ikkuna3;
+    private Hero hero;
     @Override
     public void start(Stage ikkuna) {
-        
-        // main menu & start
-        
+        ArrayList<Player> playerlist2 = playerlist;
+        ikkuna3 = ikkuna;
+        scene = new Scene(mainMenuPane());
+        ikkuna.getIcons().add(new Image("file:icon.png"));
+        ikkuna.setTitle("HS Drinking Game");
+        ikkuna.setScene(scene);
+        ikkuna.show();
+    }
+    
+    public BorderPane mainMenuPane() {
+        Image image = new Image("file:background.jpg");
+        BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         BorderPane mainMenuPane = new BorderPane();
         mainMenuPane.setPrefSize(1080,720);
         
@@ -61,19 +75,32 @@ public class HSDrinkingGame extends Application {
         valikko.getChildren().addAll(start, options, exit);
         mainMenuPane.setCenter(valikko);
         valikko.setAlignment(Pos.CENTER);
-        Image image = new Image("file:background.jpg");
+        mainMenuPane.setBackground(new Background(backgroundImage));
+        
+        options.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  scene.setRoot(OptionsPane());
+            }
+        });
+        exit.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  System.exit(0);
+            }
+       });
+        start.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  scene.setRoot(StartOfGamePane());
+            }
+        });
+        
+        return mainMenuPane;
+    }
+    
+    public BorderPane OptionsPane() {
+    Image image = new Image("file:background.jpg");
         BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        mainMenuPane.setBackground(new Background(backgroundImage));      
-        ikkuna.getIcons().add(new Image("file:icon.png"));
-        ikkuna.setTitle("HS Drinking Game");
-        Scene scene = new Scene(mainMenuPane);
-        ikkuna.setScene(scene);
-        ikkuna.show();
-        
-        // options
-        
-        BorderPane OptionsPane = new BorderPane();
+            BorderPane OptionsPane = new BorderPane();
         OptionsPane.setPrefSize(1080,720);
 
         VBox OptionsValikko = new VBox();
@@ -94,6 +121,29 @@ public class HSDrinkingGame extends Application {
         OptionsValikko.setAlignment(Pos.CENTER);
         OptionsPane.setBackground(new Background(backgroundImage));
         
+        button1.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  ikkuna3.setFullScreen(true);
+            }
+        });
+        button2.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  ikkuna3.setFullScreen(false);
+            }
+        });
+        back.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  scene.setRoot(mainMenuPane());
+            }
+        });
+        
+        return OptionsPane;
+    }
+    
+    public BorderPane StartOfGamePane() {
+        Image image = new Image("file:background.jpg");
+        BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         BorderPane StartOfGamePane = new BorderPane();
         
         StartOfGamePane.setBackground(new Background(backgroundImage));
@@ -109,60 +159,10 @@ public class HSDrinkingGame extends Application {
         HowManyPlayers.getChildren().addAll(label2, playerAmount);
         HowManyPlayers.setAlignment(Pos.CENTER);
         StartOfGamePane.setCenter(HowManyPlayers);
-
-        BorderPane PlayersPane = new BorderPane();
-        PlayersPane.setBackground(new Background(backgroundImage));
-        int index = 1;
-        VBox playernamebox = new VBox();
-        Label label3 = new Label("Player name: (" + index + "/" + playerAmount.textProperty() + ")"); // textproperty ei toimi
-        TextField playerName = new TextField();
-        Label label4 = new Label("Class: ");
-        ToggleButton warrior = new ToggleButton("Warrior");
-        ToggleButton shaman = new ToggleButton("Shaman");
-        ToggleButton paladin = new ToggleButton("Paladin");
-        ToggleGroup heroes = new ToggleGroup();
-        warrior.setToggleGroup(heroes);
-        shaman.setToggleGroup(heroes);
-        paladin.setToggleGroup(heroes);
-        playernamebox.getChildren().addAll(label3, playerName, label4, warrior, shaman, paladin);
-        playernamebox.setAlignment(Pos.CENTER);
-        PlayersPane.setCenter(playernamebox);
         
-        // napit
-        
-        button1.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  ikkuna.setFullScreen(true);
-            }
-        });
-        button2.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  ikkuna.setFullScreen(false);
-            }
-        });
-        back.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  scene.setRoot(mainMenuPane);
-            }
-        });
         back2.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
-                  scene.setRoot(mainMenuPane);
-            }
-        });
-        options.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  scene.setRoot(OptionsPane);
-            }
-        });
-        exit.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  System.exit(0);
-            }
-       });
-        start.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                  scene.setRoot(StartOfGamePane);
+                  scene.setRoot(mainMenuPane());
             }
         });
         next.setOnAction(new EventHandler<ActionEvent>(){
@@ -171,13 +171,83 @@ public class HSDrinkingGame extends Application {
                       int numberInput = Integer.parseInt(playerAmount.getText());
                       if (numberInput >= 2) {
                       players = Integer.parseInt(playerAmount.getText());
-                      scene.setRoot(PlayersPane);
+                      index = 1;
+                      scene.setRoot(PlayersPane());
                     } // tähän vois kehittää error pop-upin jossain vaiheessa
                   }
                   
             }
-        });
+        });        
+        
+        return StartOfGamePane;
     }
+    
+    public BorderPane PlayersPane() {
+        Image image = new Image("file:background.jpg");
+        BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        BorderPane PlayersPane = new BorderPane();
+        PlayersPane.setBackground(new Background(backgroundImage));
+        VBox playernamebox = new VBox();
+        Label label3 = new Label("Player name: (" + index + "/" + players + ")"); // textproperty ei toimi
+        TextField playerName = new TextField();
+        Label label4 = new Label("Class: ");
+        ToggleButton warrior = new ToggleButton("Warrior");
+        ToggleButton shaman = new ToggleButton("Shaman");
+        ToggleButton paladin = new ToggleButton("Paladin");
+        ToggleGroup heroes = new ToggleGroup(); // vaan kolme heroa atm, lisään kyl kaikki
+        heroes.selectToggle(warrior);
+        warrior.setToggleGroup(heroes);
+        shaman.setToggleGroup(heroes);
+        paladin.setToggleGroup(heroes);
+        playernamebox.getChildren().addAll(label3, playerName, label4, warrior, shaman, paladin);
+        playernamebox.setAlignment(Pos.CENTER);
+        PlayersPane.setCenter(playernamebox);
+        Button next = new Button("Next");
+        PlayersPane.setTop(next);
+        next.setAlignment(Pos.TOP_RIGHT);
+        Button back = new Button("Back");
+        PlayersPane.setBottom(back);
+        final Token token = new Token("test"); // placeholder kunnes jaksan lisää tokenit oikeasti
+        
+        warrior.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Warrior;
+            }
+        });
+        paladin.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Paladin;
+            }
+        });
+        shaman.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Shaman;
+            }
+        });
+        back.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  scene.setRoot(StartOfGamePane());
+            }   
+        });
+        next.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  if (!(playerName.getText().isEmpty())) { // katsoo onko tekstikentässä numeroita
+                      
+                      if (index == players) {
+                          scene.setRoot(mainMenuPane());
+                      } else {
+                        index++;
+                        Player player = new Player(playerName.getText(), token, hero);
+                        playerlist.add(player);
+                        scene.setRoot(PlayersPane());
+                    } // tähän vois kehittää error pop-upin jossain vaiheessa
+                  }
+                  
+            }
+        });   
+        return PlayersPane;
+    };
     public static void main(String[] args) {
         launch(HSDrinkingGame.class);
     }

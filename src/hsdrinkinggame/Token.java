@@ -2,9 +2,9 @@ package hsdrinkinggame;
 import javafx.scene.image.Image;
 
 public class Token {
-    private Image image;
+    private String test; // väliaikanen kunnes jaksan piirtää paintilla tokenit
     
-    public Token(Image image) {
-        this.image = image;
+    public Token(String test) {
+        this.test = test;
     }
 }

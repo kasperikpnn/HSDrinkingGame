@@ -34,13 +34,20 @@ import java.awt.event.*;
 import static javafx.application.Application.launch;
 import javafx.collections.ObservableList;
 import javafx.stage.Popup;
+import javafx.scene.image.ImageView;
+import javafx.beans.binding.Bindings;
 public class HSDrinkingGame extends Application {
     private int players;
     private int index;
     private ArrayList<Player> playerlist = new ArrayList<Player>();
     private Scene scene;
     private Stage ikkuna3;
+    private Stage ikkuna4;
     private Hero hero;
+    private Token token;
+    private Token tokenData;
+    private Token redTokenP = new Token(new Image("file:redtoken.png"));
+    private Token blueTokenP = new Token(new Image("file:bluetoken.png"));
     @Override
     public void start(Stage ikkuna) {
         ArrayList<Player> playerlist2 = playerlist;
@@ -50,6 +57,16 @@ public class HSDrinkingGame extends Application {
         ikkuna.setTitle("HS Drinking Game");
         ikkuna.setScene(scene);
         ikkuna.show();
+    }
+    
+    public Stage tokenSelectStage() {
+        Scene scenne = new Scene(StartOfGamePane());
+        Stage ikkuna = new Stage();
+        ikkuna4 = ikkuna;
+        ikkuna.setScene(scenne);
+        scenne.setRoot(tokenSelect());
+        ikkuna.show();
+        return ikkuna;
     }
     
     public BorderPane mainMenuPane() {
@@ -202,8 +219,7 @@ public class HSDrinkingGame extends Application {
         ToggleButton warrior = new ToggleButton("Warrior");
         ToggleButton warlock = new ToggleButton("Warlock");
 
-        ToggleGroup heroes = new ToggleGroup(); // vaan kolme heroa atm, lisään kyl kaikki
-        heroes.selectToggle(warrior);
+        ToggleGroup heroes = new ToggleGroup();
         druid.setToggleGroup(heroes);
         hunter.setToggleGroup(heroes);
         mage.setToggleGroup(heroes);
@@ -222,7 +238,9 @@ public class HSDrinkingGame extends Application {
         next.setAlignment(Pos.TOP_RIGHT);
         Button back = new Button("Back");
         PlayersPane.setBottom(back);
-        final Token token = new Token("test"); // placeholder kunnes jaksan lisää tokenit oikeasti
+        Button tokenSelect = new Button("Select Your Token");
+        tokenSelect.setAlignment(Pos.CENTER_RIGHT);
+        PlayersPane.setRight(tokenSelect);
         
         warrior.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
@@ -283,7 +301,7 @@ public class HSDrinkingGame extends Application {
         });
         next.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
-                  if (!(playerName.getText().isEmpty())) { // katsoo onko tekstikentässä numeroita
+                  if (!(playerName.getText().isEmpty()) && hero != null && token != null) { // katsoo onko tekstikentässä numeroita
                       
                       if (index == players) {
                           scene.setRoot(mainMenuPane());
@@ -291,14 +309,74 @@ public class HSDrinkingGame extends Application {
                         index++;
                         Player player = new Player(playerName.getText(), token, hero);
                         playerlist.add(player);
+                        hero = null;
+                        token = null;
                         scene.setRoot(PlayersPane());
                     } // tähän vois kehittää error pop-upin jossain vaiheessa
                   }
                   
             }
-        });   
+        });
+        tokenSelect.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t) {
+                popup().show(tokenSelectStage());
+            }
+        });
         return PlayersPane;
     };
+    public Popup popup() {
+        Popup popup = new Popup();
+        return popup;
+    }
+    public GridPane tokenSelect() {
+        GridPane pane = new GridPane();
+        ToggleGroup tokens = new ToggleGroup();
+        ToggleButton red = new ToggleButton();
+        final Image redToken = new Image("file:redtoken.png");
+        final ImageView toggleImage = new ImageView();
+        red.setGraphic(toggleImage);
+        toggleImage.imageProperty().bind(Bindings
+           .when(red.selectedProperty())
+                .then(redToken)
+                .otherwise(redToken)
+        );
+        ToggleButton blue = new ToggleButton();
+        final Image blueToken = new Image("file:bluetoken.png");
+        blue.setGraphic(toggleImage);
+        toggleImage.imageProperty().bind(Bindings
+           .when(blue.selectedProperty())
+                .then(blueToken)
+                .otherwise(blueToken)
+        );
+        ToggleButton green = new ToggleButton("Mage");
+        ToggleButton yellow = new ToggleButton("Paladin");
+        red.setToggleGroup(tokens);
+        blue.setToggleGroup(tokens);
+        pane.add(red, 0, 0);
+        pane.add(blue, 0, 1);
+        Button ok = new Button("OK");
+        pane.add(ok, 5, 4);
+        red.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                tokenData = redTokenP;
+            }
+        });
+        blue.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                tokenData = blueTokenP;
+            }
+        });
+        ok.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  if (tokenData != null) {
+                      token = tokenData;
+                      tokenData = null;
+                      ikkuna4.close();
+                  }
+            }
+        });
+        return pane;
+    }
     public static void main(String[] args) {
         launch(HSDrinkingGame.class);
     }

@@ -192,14 +192,28 @@ public class HSDrinkingGame extends Application {
         Label label3 = new Label("Player name: (" + index + "/" + players + ")"); // textproperty ei toimi
         TextField playerName = new TextField();
         Label label4 = new Label("Class: ");
-        ToggleButton warrior = new ToggleButton("Warrior");
-        ToggleButton shaman = new ToggleButton("Shaman");
+        ToggleButton druid = new ToggleButton("Druid");
+        ToggleButton hunter = new ToggleButton("Hunter");
+        ToggleButton mage = new ToggleButton("Mage");
         ToggleButton paladin = new ToggleButton("Paladin");
+        ToggleButton priest = new ToggleButton("Priest");
+        ToggleButton rogue = new ToggleButton("Rogue");
+        ToggleButton shaman = new ToggleButton("Shaman");
+        ToggleButton warrior = new ToggleButton("Warrior");
+        ToggleButton warlock = new ToggleButton("Warlock");
+
         ToggleGroup heroes = new ToggleGroup(); // vaan kolme heroa atm, lisään kyl kaikki
         heroes.selectToggle(warrior);
-        warrior.setToggleGroup(heroes);
-        shaman.setToggleGroup(heroes);
+        druid.setToggleGroup(heroes);
+        hunter.setToggleGroup(heroes);
+        mage.setToggleGroup(heroes);
         paladin.setToggleGroup(heroes);
+        priest.setToggleGroup(heroes);
+        rogue.setToggleGroup(heroes);
+        shaman.setToggleGroup(heroes);
+        warlock.setToggleGroup(heroes);
+        warrior.setToggleGroup(heroes);
+        
         playernamebox.getChildren().addAll(label3, playerName, label4, warrior, shaman, paladin);
         playernamebox.setAlignment(Pos.CENTER);
         PlayersPane.setCenter(playernamebox);
@@ -225,9 +239,46 @@ public class HSDrinkingGame extends Application {
                   hero = Hero.Shaman;
             }
         });
+        druid.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Druid;
+            }
+        });
+        mage.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Mage;
+            }
+        });
+        priest.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Priest;
+            }
+        });
+        warlock.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Warlock;
+            }
+        });
+        hunter.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Hunter;
+            }
+        });
+        rogue.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                  hero = Hero.Rogue;
+            }
+        });
         back.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
+                if (index == 1) {
                   scene.setRoot(StartOfGamePane());
+                };
+                if (index > 1) {
+                    index--;
+                    playerlist.remove(index-1);
+                    scene.setRoot(PlayersPane());
+                }
             }   
         });
         next.setOnAction(new EventHandler<ActionEvent>(){

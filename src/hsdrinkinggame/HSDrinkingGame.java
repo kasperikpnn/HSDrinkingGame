@@ -236,6 +236,9 @@ public class HSDrinkingGame extends Application {
         playernamebox.setAlignment(Pos.CENTER);
         PlayersPane.setCenter(playernamebox);
         Button next = new Button("Next");
+        if (index == players) {
+            next.setText("Start the game!");
+        }
         PlayersPane.setTop(next);
         next.setAlignment(Pos.TOP_RIGHT);
         Button back = new Button("Back");
@@ -306,7 +309,7 @@ public class HSDrinkingGame extends Application {
                   if (!(playerName.getText().isEmpty()) && hero != null && token != null) { // katsoo onko tekstikentässä numeroita
                       
                       if (index == players) {
-                          scene.setRoot(mainMenuPane());
+                          scene.setRoot(PlayerRollPane());
                       } else {
                         index++;
                         Player player = new Player(playerName.getText(), token, hero);
@@ -418,6 +421,20 @@ public class HSDrinkingGame extends Application {
             }
         });
         return pane;
+    }
+    public BorderPane PlayerRollPane() {
+        Image image = new Image("file:background.jpg");
+        BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        BorderPane PlayerRollPane = new BorderPane();
+        PlayerRollPane.setBackground(new Background(backgroundImage));
+        VBox valikko = new VBox();
+        Label label = new Label("Randomized order or set order?");
+        Button random = new Button("Randomized Order");
+        Button set = new Button("Set Order");
+        valikko.getChildren().addAll(label, random, set);
+        PlayerRollPane.setCenter(valikko);
+        return PlayerRollPane;
     }
     public static void main(String[] args) {
         launch(HSDrinkingGame.class);

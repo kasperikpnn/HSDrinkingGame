@@ -214,7 +214,7 @@ public class HSDrinkingGame extends Application {
         warlock.setToggleGroup(heroes);
         warrior.setToggleGroup(heroes);
         
-        playernamebox.getChildren().addAll(label3, playerName, label4, warrior, shaman, paladin);
+        playernamebox.getChildren().addAll(label3, playerName, label4, druid, hunter, mage, paladin, priest, rogue, shaman, warrior, warlock);
         playernamebox.setAlignment(Pos.CENTER);
         PlayersPane.setCenter(playernamebox);
         Button next = new Button("Next");

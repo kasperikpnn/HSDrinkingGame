@@ -48,6 +48,8 @@ public class HSDrinkingGame extends Application {
     private Token tokenData;
     private Token redTokenP = new Token(new Image("file:redtoken.png"));
     private Token blueTokenP = new Token(new Image("file:bluetoken.png"));
+    private Token greenTokenP = new Token(new Image("file:greentoken.png"));
+    private Token yellowTokenP = new Token(new Image("file:yellowtoken.png"));
     @Override
     public void start(Stage ikkuna) {
         ArrayList<Player> playerlist2 = playerlist;
@@ -330,10 +332,14 @@ public class HSDrinkingGame extends Application {
     }
     public GridPane tokenSelect() {
         GridPane pane = new GridPane();
+        pane.setPrefSize(500,500);
         ToggleGroup tokens = new ToggleGroup();
         ToggleButton red = new ToggleButton();
         final Image redToken = new Image("file:redtoken.png");
         final ImageView toggleImage = new ImageView();
+        final ImageView toggleImage2 = new ImageView();
+        final ImageView toggleImage3 = new ImageView();
+        final ImageView toggleImage4 = new ImageView();
         red.setGraphic(toggleImage);
         toggleImage.imageProperty().bind(Bindings
            .when(red.selectedProperty())
@@ -342,20 +348,46 @@ public class HSDrinkingGame extends Application {
         );
         ToggleButton blue = new ToggleButton();
         final Image blueToken = new Image("file:bluetoken.png");
-        blue.setGraphic(toggleImage);
-        toggleImage.imageProperty().bind(Bindings
+        blue.setGraphic(toggleImage2);
+        toggleImage2.imageProperty().bind(Bindings
            .when(blue.selectedProperty())
                 .then(blueToken)
                 .otherwise(blueToken)
         );
-        ToggleButton green = new ToggleButton("Mage");
-        ToggleButton yellow = new ToggleButton("Paladin");
+        ToggleButton green = new ToggleButton();
+        final Image greenToken = new Image("file:greentoken.png");
+        green.setGraphic(toggleImage3);
+        toggleImage3.imageProperty().bind(Bindings
+           .when(green.selectedProperty())
+                .then(greenToken)
+                .otherwise(greenToken)
+        );
+        ToggleButton yellow = new ToggleButton();
+        final Image yellowToken = new Image("file:yellowtoken.png");
+        yellow.setGraphic(toggleImage4);
+        toggleImage4.imageProperty().bind(Bindings
+           .when(yellow.selectedProperty())
+                .then(yellowToken)
+                .otherwise(yellowToken)
+        );
         red.setToggleGroup(tokens);
         blue.setToggleGroup(tokens);
-        pane.add(red, 0, 0);
-        pane.add(blue, 0, 1);
+        green.setToggleGroup(tokens);
+        yellow.setToggleGroup(tokens);
         Button ok = new Button("OK");
-        pane.add(ok, 5, 4);
+        pane.add(ok, 0, 0);
+        pane.add(red, 2, 0);
+        pane.add(blue, 2, 1);
+        pane.add(green, 3, 0);
+        pane.add(yellow, 3, 1);
+        red.setMaxWidth(100);
+        red.setMaxHeight(100);
+        blue.setMaxWidth(100);
+        blue.setMaxHeight(100);
+        green.setMaxWidth(100);
+        green.setMaxHeight(100);
+        yellow.setMaxWidth(100);
+        yellow.setMaxHeight(100);
         red.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
                 tokenData = redTokenP;
@@ -364,6 +396,16 @@ public class HSDrinkingGame extends Application {
         blue.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
                 tokenData = blueTokenP;
+            }
+        });
+        green.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                tokenData = greenTokenP;
+            }
+        });
+        yellow.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                tokenData = yellowTokenP;
             }
         });
         ok.setOnAction(new EventHandler<ActionEvent>(){

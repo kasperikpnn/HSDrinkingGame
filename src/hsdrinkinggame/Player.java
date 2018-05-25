@@ -34,4 +34,8 @@ public class Player {
     public int getDrinkCount() {
         return this.drinkCount;
     }
+    
+    public Token getToken() {
+        return this.token;
+    }
 }

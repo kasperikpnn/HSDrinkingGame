@@ -2,6 +2,7 @@ package hsdrinkinggame;
 
 import javafx.application.Application;
 import java.util.ArrayList;
+import java.util.Collections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ import javafx.scene.layout.Background;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -422,20 +424,40 @@ public class HSDrinkingGame extends Application {
         });
         return pane;
     }
-    public BorderPane PlayerRollPane() {
+    public BorderPane PlayerRollPane() { // kehitä tähän jossain vaiheessa vaihtoehto sille että pelaajat heittää noppaa ja suurimman luvun saanut aloittaa jne
         Image image = new Image("file:background.jpg");
         BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
         BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
         BorderPane PlayerRollPane = new BorderPane();
         PlayerRollPane.setBackground(new Background(backgroundImage));
         VBox valikko = new VBox();
-        Label label = new Label("Randomized order or set order?");
+        Label label = new Label("Randomized order or set order? (from first player to last player)");
         Button random = new Button("Randomized Order");
         Button set = new Button("Set Order");
         valikko.getChildren().addAll(label, random, set);
         PlayerRollPane.setCenter(valikko);
+        random.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                Collections.shuffle(playerlist);
+                scene.setRoot(GamePane());
+            }
+        });
+        set.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+                scene.setRoot(GamePane());
+            }
+        });
         return PlayerRollPane;
     }
+
+    public BorderPane GamePane() {
+        Image image = new Image("file:background.jpg");
+        BackgroundSize backgroundSize = new BackgroundSize(1000, 1000, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        BorderPane GamePane = new BorderPane();
+        GamePane.setBackground(new Background(backgroundImage));
+        return GamePane;
+    }    
     public static void main(String[] args) {
         launch(HSDrinkingGame.class);
     }

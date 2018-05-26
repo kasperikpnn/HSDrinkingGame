@@ -435,6 +435,7 @@ public class HSDrinkingGame extends Application {
         Button random = new Button("Randomized Order");
         Button set = new Button("Set Order");
         valikko.getChildren().addAll(label, random, set);
+        valikko.setAlignment(Pos.CENTER);
         PlayerRollPane.setCenter(valikko);
         random.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){

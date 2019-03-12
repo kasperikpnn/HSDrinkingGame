@@ -1,0 +1,27 @@
+King Togwaggle:
+"haha"
+"1!3?G,1!3?T"
+Skipper:
+"haha"
+"2!2?T"
+CLASS CARD:
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+"haha"
+"1!3?G,1!3?T";
+Target Dummy:
+""
